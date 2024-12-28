@@ -1,0 +1,9 @@
+﻿.simple-anchor {
+    text-decoration: none;
+    color: black;
+}
+
+.simple-anchor:hover {
+    text-decoration: none;
+    color: black
+}

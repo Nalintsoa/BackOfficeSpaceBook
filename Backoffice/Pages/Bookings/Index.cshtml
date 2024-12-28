@@ -1,0 +1,72 @@
+﻿@page
+@model Backoffice.Pages.Bookings.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Réservations</h1>
+
+<p>
+    <a asp-page="Create">Ajouter une nouvelle réservation</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "date") ? "date_desc" : "date")" class="simple-anchor">
+                    @Html.DisplayNameFor(model => model.Booking[0].BookingDate)
+                    @(Model.SortOrder == "date" ? "↑" : Model.SortOrder == "date_desc" ? "↓" : "")
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "paid") ? "paid_desc" : "paid")" class="simple-anchor">
+                    @Html.DisplayNameFor(model => model.Booking[0].BookingPaidAmount)
+                    @(Model.SortOrder == "paid" ? "↑" : Model.SortOrder == "paid_desc" ? "↓" : "")
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "price") ? "price_desc" : "price")" class="simple-anchor">
+                    @Html.DisplayNameFor(model => model.Booking[0].BookingPrice)
+                    @(Model.SortOrder == "price" ? "↑" : Model.SortOrder == "price_desc" ? "↓" : "")
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "customer") ? "customer_desc" : "customer")" class="simple-anchor">
+                    @Html.DisplayNameFor(model => model.Booking[0].Customer.CustomerEmail)
+                    @(Model.SortOrder == "customer" ? "↑" : Model.SortOrder == "customer_desc" ? "↓" : "")
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking[0].Space)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Booking) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingPaidAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.CustomerEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Space.SpaceName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.BookingID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.BookingID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.BookingID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

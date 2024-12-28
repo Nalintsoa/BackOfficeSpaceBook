@@ -1,0 +1,47 @@
+﻿@page
+@model Backoffice.Pages.Spaces.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Space</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Space.SpaceName" class="control-label"></label>
+                <input asp-for="Space.SpaceName" class="form-control" />
+                <span asp-validation-for="Space.SpaceName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Space.SpaceCapacity" class="control-label"></label>
+                <input asp-for="Space.SpaceCapacity" class="form-control" />
+                <span asp-validation-for="Space.SpaceCapacity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Space.SpacePrice" class="control-label"></label>
+                <input asp-for="Space.SpacePrice" class="form-control" />
+                <span asp-validation-for="Space.SpacePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
