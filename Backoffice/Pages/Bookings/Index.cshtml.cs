@@ -40,10 +40,9 @@ namespace Backoffice.Pages.Bookings
                 "price_desc" => bookings.OrderByDescending(b => b.BookingPrice),
                 "customer" => bookings.OrderBy(b => b.Customer.CustomerEmail),
                 "customer_desc" => bookings.OrderByDescending(b => b.Customer.CustomerEmail),
-                _ => bookings.OrderBy(b => b.BookingDate), // Par défaut, tri par date croissante
+                _ => bookings.OrderBy(b => b.BookingDate),
             };
 
-            // Exécuter la requête
             Booking = await bookings.ToListAsync();
         }
     }

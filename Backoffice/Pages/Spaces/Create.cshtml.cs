@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Backoffice.Data;
 using Backoffice.Models;
+using Microsoft.Extensions.Hosting;
 
 namespace Backoffice.Pages.Spaces
 {
     public class CreateModel : PageModel
     {
         private readonly Backoffice.Data.SpaceBookContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public CreateModel(Backoffice.Data.SpaceBookContext context)
+        public CreateModel(Backoffice.Data.SpaceBookContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         public IActionResult OnGet()
@@ -27,7 +30,9 @@ namespace Backoffice.Pages.Spaces
         [BindProperty]
         public Space Space { get; set; } = default!;
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
+        [BindProperty]
+        public IFormFile Filename { get; set; }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -35,7 +40,37 @@ namespace Backoffice.Pages.Spaces
                 return Page();
             }
 
-            _context.Spaces.Add(Space);
+            if (Filename == null || Filename.Length == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Please select an image to upload.");
+                return Page();
+            }
+
+            // Enregistrer le fichier dans le dossier wwwroot/images
+            Console.WriteLine("'****************************************************************environment'", _environment.WebRootPath);
+            var uploadsFolder = Path.Combine(_environment.WebRootPath, "images");
+            Directory.CreateDirectory(uploadsFolder); // S'assure que le dossier existe
+
+            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(Filename.FileName);
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await Filename.CopyToAsync(stream);
+            }
+
+            // Enregistrer le chemin dans la base de données
+            var imageRecord = new Space
+            {
+                SpacePrice = Space.SpacePrice,
+                SpaceCapacity = Space.SpaceCapacity,
+                SpaceName = Space.SpaceName,
+                Filename = Path.Combine("images", uniqueFileName),
+            };
+            _context.Spaces.Add(imageRecord);
+            
+
+            //_context.Spaces.Add(Space);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

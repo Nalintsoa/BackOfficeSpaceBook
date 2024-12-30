@@ -1,0 +1,208 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<header>
+    <link rel="stylesheet" href="~/css/home.css"/>
+</header>
+
+<div class="mt-0 home-body bg-brown">
+    <div class="image-container">
+        <img src="/assets/coworrking_space_image.png" class="image-in-container" />
+
+        <div class="container-fluid on-image">
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-9">
+                    <p class="title h1 text-white"> A la recherche d'une salle ?</p>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3"></div>
+                <div class="col-9">
+                    <p class="title h3 text-white"> Nous avons ce qu'il vous faut</p>
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-3"></div>
+                <div class="col-9 flex">
+                    <button type="button" class="btn btn-outline-info btn-lg" data-toggle="modal" data-target="#exampleModal" onclick="openModal()">S'inscrire</button>
+                    <button class="btn btn-outline-info btn-lg ms-1" data-toggle="modal" data-target="#exampleModal" onclick="openModal()">Se connecter</button>
+                </div>
+            </div>
+        </div>  
+    </div>
+
+    <div class="scroll-image-container border-bottom">
+        <div class="container-fluid on-image">
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-9">
+                    <p class="title h1">Nous nous engageons pour vous</p>
+                    <div class="row mt-5">
+                        <div class="col-4 d-flex">
+                            <img src="~/assets/securise.png" width="60" height="60"/>
+                            <div class="ms-2">
+                                <p class="title h2">Sécurisé</p>
+                                Un espace au cœur de Tana Water Front : restaurants, boutiques, connexion fibre optique, etc.
+                            </div>
+                        </div>
+                        <div class="col-4 d-flex">
+                            <img src="~/assets/reseautage.png" width="60" height="60" />
+                            <div class="ms-2">
+                                <p class="title h2">Réseautage</p>
+                                Un espace au cœur de Tana Water Front : restaurants, boutiques, connexion fibre optique, etc.
+                            </div>
+                        </div>
+                        <div class="col-4 d-flex">
+                            <img src="~/assets/euro.png" width="60" height="60" />
+                            <div class="ms-2">
+                                <p class="title h2">À petit prix</p>
+                                Un espace au cœur de Tana Water Front : restaurants, boutiques, connexion fibre optique, etc.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-3"></div>
+                <div class="col-9">
+                    <div class="scroll-container">
+                        <img src="/assets/coworrking_space_image.png" class="image-scrolled" data-toggle="popover" data-placement="bottom" data-content="Content">
+                        <img src="/assets/coworrking_space_image.png" class="image-scrolled">
+                        <img src="/assets/coworrking_space_image.png" class="image-scrolled">
+                        <img src="/assets/coworrking_space_image.png" class="image-scrolled">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline-container bg-light">
+        <div class="container-fluid on-image">
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-9">
+                    <p class="title h1">Effectuez votre réservation</p>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-3"></div>
+                <div class="col-9">
+                    <div class="main-timeline">
+                        <!-- start experience section-->
+                        <div class="timeline">
+                            <div class="icon"></div>
+                            <div class="date-content">
+                                <div class="date-outer">
+                                    <span class="date">
+                                        <span class="month">étape</span>
+                                        <span class="year">1</span> 
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="timeline-content">
+                                <h5 class="title">Visual Art &amp; Design</h5>
+                                <p class="description">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur. Praesent dapibus dolor felis, eu ultrices elit molestie.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- end experience section-->
+                        <!-- start experience section-->
+                        <div class="timeline">
+                            <div class="icon"></div>
+                            <div class="date-content">
+                                <div class="date-outer">
+                                    <span class="date">
+                                        <span class="month">1 Years</span>
+                                        <span class="year">2015</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="timeline-content">
+                                <h5 class="title">Product Designer</h5>
+                                <p class="description">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur. Praesent dapibus dolor felis, eu ultrices elit molestie.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- end experience section-->
+                        <!-- start experience section-->
+                        <div class="timeline">
+                            <div class="icon"></div>
+                            <div class="date-content">
+                                <div class="date-outer">
+                                    <span class="date">
+                                        <span class="month">2 Years</span>
+                                        <span class="year">2016</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="timeline-content">
+                                <h5 class="title">Web Designer</h5>
+                                <p class="description">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur. Praesent dapibus dolor felis, eu ultrices elit molestie.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- end experience section-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="help-container border-bottom">
+        <div class="container-fluid help-content">
+            <div class="row">
+                <div class="col-3">
+                    <img src="~/assets/ampoule.png" class="help-image" />
+                </div>
+                <div class="col-9 text-center align-content-center">
+                    <p class="title h1 mt-5">Des suggestions?</p>
+                    <p class="h3 mt-3">N'hésitez pas à nous contacter</p>
+                    <p class="h3 mt-3">Nous apprécions votre collaboration</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        $("body").removeClass("modal-open");
+        $("#exampleModal").modal("show");
+    }
+
+    function closeModal() {
+        $("#exampleModal").modal("hide")
+    } 
+</script>

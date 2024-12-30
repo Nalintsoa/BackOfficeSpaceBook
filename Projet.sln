@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backoffice", "Backoffice\Backoffice.csproj", "{6038F0D9-DB8B-4D9A-980B-565D24A957DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontoffice", "Frontoffice\Frontoffice.csproj", "{AF76389A-F9F4-4AC3-805C-CF619871006C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6038F0D9-DB8B-4D9A-980B-565D24A957DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6038F0D9-DB8B-4D9A-980B-565D24A957DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6038F0D9-DB8B-4D9A-980B-565D24A957DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF76389A-F9F4-4AC3-805C-CF619871006C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF76389A-F9F4-4AC3-805C-CF619871006C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF76389A-F9F4-4AC3-805C-CF619871006C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF76389A-F9F4-4AC3-805C-CF619871006C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

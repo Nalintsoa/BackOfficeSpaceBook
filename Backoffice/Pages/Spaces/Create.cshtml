@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <span class="text-danger">*</span>
@@ -31,6 +31,12 @@
                 <input asp-for="Space.SpacePrice" class="form-control" />
                 <span asp-validation-for="Space.SpacePrice" class="text-danger"></span>
             </div>
+            <div class="form-group my-3">
+                @* <input asp-for="Space.SpacePrice" class="form-control" /> *@
+                <input type="file" id="Filename" name="Filename" />
+                <span asp-validation-for="Space.Filename" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

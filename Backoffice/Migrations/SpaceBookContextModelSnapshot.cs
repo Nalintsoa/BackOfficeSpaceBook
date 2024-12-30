@@ -146,6 +146,9 @@ namespace Backoffice.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SpaceID"));
 
+                    b.Property<string>("Filename")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SpaceCapacity")
                         .HasColumnType("int");
 

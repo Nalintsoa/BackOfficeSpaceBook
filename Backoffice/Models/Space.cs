@@ -16,6 +16,9 @@ namespace Backoffice.Models
         [Required]
         public double SpacePrice { get; set; }
 
+        [DisplayName("Image")]
+        public string? Filename { get; set; }
+
         public ICollection<Booking>? Bookings { get; set; }
     }
 }
