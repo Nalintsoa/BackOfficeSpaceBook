@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Backoffice.Data;
+using Backoffice.Services;
+using Microsoft.Extensions.FileProviders;
 namespace Backoffice
 {
     public class Program
@@ -15,6 +17,7 @@ namespace Backoffice
             builder.Services.AddRazorPages();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddSingleton<SharedFileService>();
 
             var app = builder.Build();
 
@@ -43,6 +46,13 @@ namespace Backoffice
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            var sharedFileService = new SharedFileService(builder.Configuration);
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(sharedFileService.GetSharedFilesDirectory()),
+                RequestPath = "/SharedFiles"
+            });
 
             app.UseRouting();
 

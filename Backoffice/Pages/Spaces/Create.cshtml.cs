@@ -15,11 +15,13 @@ namespace Backoffice.Pages.Spaces
     {
         private readonly Backoffice.Data.SpaceBookContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly IConfiguration _configuration;
 
-        public CreateModel(Backoffice.Data.SpaceBookContext context, IWebHostEnvironment environment)
+        public CreateModel(Backoffice.Data.SpaceBookContext context, IWebHostEnvironment environment, IConfiguration configuration)
         {
             _context = context;
             _environment = environment;
+            _configuration = configuration;
         }
 
         public IActionResult OnGet()
@@ -48,7 +50,9 @@ namespace Backoffice.Pages.Spaces
 
             // Enregistrer le fichier dans le dossier wwwroot/images
             Console.WriteLine("'****************************************************************environment'", _environment.WebRootPath);
-            var uploadsFolder = Path.Combine(_environment.WebRootPath, "images");
+            var sharedPath = _configuration["SharedFilesPath"];
+            Console.WriteLine($"sharedddddd : {sharedPath} et aussi {_environment.ContentRootPath}");
+            var uploadsFolder = Path.Combine(sharedPath, "images");
             Directory.CreateDirectory(uploadsFolder); // S'assure que le dossier existe
 
             var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(Filename.FileName);

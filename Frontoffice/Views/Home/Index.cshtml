@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model System.Data.DataTable
 
 <header>
     <link rel="stylesheet" href="~/css/home.css"/>
@@ -26,8 +27,8 @@
             <div class="row mt-1">
                 <div class="col-3"></div>
                 <div class="col-9 flex">
-                    <button type="button" class="btn btn-outline-info btn-lg" data-toggle="modal" data-target="#exampleModal" onclick="openModal()">S'inscrire</button>
-                    <button class="btn btn-outline-info btn-lg ms-1" data-toggle="modal" data-target="#exampleModal" onclick="openModal()">Se connecter</button>
+                    <button type="button" class="btn btn-outline-info btn-lg" data-toggle="modal" data-target="#signUp" onclick="openSignUpModal('#signUp')">S'inscrire</button>
+                    <button class="btn btn-outline-info btn-lg ms-1" data-toggle="modal" data-target="#signUp" onclick="openSignUpModal('#signIn')">Se connecter</button>
                 </div>
             </div>
         </div>  
@@ -68,10 +69,13 @@
                 <div class="col-3"></div>
                 <div class="col-9">
                     <div class="scroll-container">
-                        <img src="/assets/coworrking_space_image.png" class="image-scrolled" data-toggle="popover" data-placement="bottom" data-content="Content">
-                        <img src="/assets/coworrking_space_image.png" class="image-scrolled">
-                        <img src="/assets/coworrking_space_image.png" class="image-scrolled">
-                        <img src="/assets/coworrking_space_image.png" class="image-scrolled">
+                        @* <img src="/assets/coworrking_space_image.png" class="image-scrolled" data-toggle="popover" data-placement="bottom" data-content="Content"> *@
+                        @* <img src="/assets/coworrking_space_image.png" class="image-scrolled"> *@
+                        @* <img src="/assets/coworrking_space_image.png" class="image-scrolled"> *@
+                        @* <img src="/assets/coworrking_space_image.png" class="image-scrolled"> *@
+                        @foreach (System.Data.DataRow row in Model.Rows) {
+                            <img src="@row["Filename"]" class="image-scrolled" />
+                        }
                     </div>
                 </div>
             </div>
@@ -82,7 +86,7 @@
         <div class="container-fluid on-image">
             <div class="row">
                 <div class="col-3"></div>
-                <div class="col-9">
+                <div class="col-9">""
                     <p class="title h1">Effectuez votre réservation</p>
                 </div>
             </div>
@@ -169,46 +173,35 @@
     </div>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="signUp" tabindex="-1" role="dialog" aria-labelledby="signUpLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                <h5 class="modal-title" id="loginModalLabel">S'enregistrer</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body"> 
-            @*     <form> *@
-            @*         <div class="mb-3"> *@
-            @*             <label for="email" class="form-label">Email address</label> *@
-            @*             <input type="email" class="form-control" id="email" required> *@
-            @*         </div> *@
-            @*         <div class="mb-3"> *@
-            @*             <label for="password" class="form-label">Password</label> *@
-            @*             <input type="password" class="form-control" id="password" required> *@
-            @*         </div> *@
-            @*         <button type="submit" class="btn btn-primary">Login</button> *@
-            @*     </form> *@
+            <div class="modal-body">
 
             <form method="post" asp-action="AddNewCustomer">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nom</label>
-                        <input type="text" class="form-control" name="name" placeholder="Name" required />
+                        <input type="text" class="form-control" name="name" required />
                 </div>
                 <div class="mb-3">
                     <label for="firstname" class="form-label">Prénoms</label>
-                        <input type="text" class="form-control" name="firstname" placeholder="Firstname" required />
+                        <input type="text" class="form-control" name="firstname" />
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="Email" required />
+                        <input type="email" class="form-control" name="email" placeholder="exemple@exemple.ex" required />
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label">Téléphone</label>
-                        <input type="text" class="form-control" name="phone" placeholder="Phone" required />
+                        <input type="text" class="form-control" name="phone" placeholder="03********" required />
                 </div>
                 <div class="mb-3">
                      <label for="password" class="form-label">Mot de passe</label>
-                        <input type="text" class="form-control" name="password" placeholder="Password" required />
+                        <input type="text" class="form-control" name="password" required />
                 </div>
                 <button type="submit" class="btn btn-primary">Ajouter</button>
             </form>
@@ -220,13 +213,41 @@
     </div>
 </div>
 
+<div class="modal fade" id="signIn" tabindex="-1" role="dialog" aria-labelledby="signInLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Se connecter</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 <form>
+                     <div class="mb-3">
+                         <label for="email" class="form-label">Adresse mail</label>
+                         <input type="email" class="form-control" id="email" required>
+                     </div>
+                     <div class="mb-3">
+                         <label for="password" class="form-label">Mot de passe</label>
+                         <input type="password" class="form-control" id="password" required>
+                     </div>
+                     <button type="submit" class="btn btn-primary">Enregistrer</button>
+                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    function openModal() {
+    function openSignUpModal(id) {
         $("body").removeClass("modal-open");
-        $("#exampleModal").modal("show");
+        $(id).modal("show");
     }
 
-    function closeModal() {
-        $("#exampleModal").modal("hide")
-    } 
+    function closeModal(id) {
+        $("#signUp").modal("hide")
+    }
+
 </script>

@@ -13,17 +13,23 @@ namespace Backoffice.Pages.Spaces
     public class IndexModel : PageModel
     {
         private readonly Backoffice.Data.SpaceBookContext _context;
+        private readonly Backoffice.Services.SharedFileService _sharedFileService;
 
-        public IndexModel(Backoffice.Data.SpaceBookContext context)
+        public IndexModel(Backoffice.Data.SpaceBookContext context, Backoffice.Services.SharedFileService sharedFileService)
         {
             _context = context;
+            _sharedFileService = sharedFileService;
         }
 
         public IList<Space> Space { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Space = await _context.Spaces.ToListAsync();
+            var spacesList = await _context.Spaces.ToListAsync();
+            foreach (var space in spacesList) {
+                space.Filename = _sharedFileService.GetSharedFilePath(space.Filename);
+            }
+            Space = spacesList;
         }
     }
 }

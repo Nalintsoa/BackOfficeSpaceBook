@@ -2,6 +2,9 @@ using System.Diagnostics;
 using Frontoffice.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
+using System.Data;
+using Frontoffice.Services;
 
 namespace Frontoffice.Controllers
 {
@@ -9,16 +12,29 @@ namespace Frontoffice.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly string _connectionString;
+        private readonly SharedFileService _sharedFileService;
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, SharedFileService sharedFileService)
         {
             _logger = logger;
             _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _sharedFileService = sharedFileService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var dataTable = new DataTable();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT * FROM Space", connection);
+                var adapter = new SqlDataAdapter(command);
+
+                adapter.Fill(dataTable);
+            }
+            foreach (System.Data.DataRow row in dataTable.Rows) {
+                row["Filename"] = _sharedFileService.GetSharedFilePath(row["Filename"].ToString());
+            }
+            return View(dataTable);
         }
 
         public IActionResult Privacy()
