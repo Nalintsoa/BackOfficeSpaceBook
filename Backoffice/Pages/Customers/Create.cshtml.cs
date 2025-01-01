@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Backoffice.Data;
 using Backoffice.Models;
+using Backoffice.Helpers;
 
 namespace Backoffice.Pages.Customers
 {
@@ -34,6 +35,12 @@ namespace Backoffice.Pages.Customers
             {
                 return Page();
             }
+
+            var salt = PasswordHelper.GenerateSalt();
+            var hash = PasswordHelper.HashPassword(Customer.CustomerPassword, salt);
+
+            Customer.CustomerPassword = hash;
+            Customer.Salt = salt;
 
             _context.Customers.Add(Customer);
             await _context.SaveChangesAsync();

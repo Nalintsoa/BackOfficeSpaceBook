@@ -21,6 +21,7 @@ namespace Backoffice.Models
         public string CustomerPassword { get; set; }
         [DisplayName("Téléphone")]
         public string CustomerPhone { get; set; }
+        public string? Salt { get; set; }
 
         public ICollection<Booking>? Bookings { get; set; }
     }

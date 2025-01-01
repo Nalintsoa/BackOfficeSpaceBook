@@ -27,8 +27,13 @@
             <div class="row mt-1">
                 <div class="col-3"></div>
                 <div class="col-9 flex">
-                    <button type="button" class="btn btn-outline-info btn-lg" data-toggle="modal" data-target="#signUp" onclick="openSignUpModal('#signUp')">S'inscrire</button>
-                    <button class="btn btn-outline-info btn-lg ms-1" data-toggle="modal" data-target="#signUp" onclick="openSignUpModal('#signIn')">Se connecter</button>
+                    @if (!ViewData.ContainsKey("isCustomerLoggedIn") || !(bool)ViewData["isCustomerLoggedIn"]!)
+                    {
+                        <button type="button" class="btn btn-outline-info btn-lg" data-toggle="modal" data-target="#signUp" onclick="openSignUpModal('#signUp')">S'inscrire</button>
+                        <button class="btn btn-outline-info btn-lg ms-1" data-toggle="modal" data-target="#signUp" onclick="openSignUpModal('#signIn')">Se connecter</button>
+                    } else {
+                        <p class="title h3 text-white">Ravi de vous accueillir @ViewData["customerfirstName"],</p>
+                    }
                 </div>
             </div>
         </div>  
@@ -69,10 +74,6 @@
                 <div class="col-3"></div>
                 <div class="col-9">
                     <div class="scroll-container">
-                        @* <img src="/assets/coworrking_space_image.png" class="image-scrolled" data-toggle="popover" data-placement="bottom" data-content="Content"> *@
-                        @* <img src="/assets/coworrking_space_image.png" class="image-scrolled"> *@
-                        @* <img src="/assets/coworrking_space_image.png" class="image-scrolled"> *@
-                        @* <img src="/assets/coworrking_space_image.png" class="image-scrolled"> *@
                         @foreach (System.Data.DataRow row in Model.Rows) {
                             <img src="@row["Filename"]" class="image-scrolled" />
                         }
@@ -221,14 +222,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                 <form>
+                 <form method="post" asp-action="CustomerLogin">
                      <div class="mb-3">
                          <label for="email" class="form-label">Adresse mail</label>
-                         <input type="email" class="form-control" id="email" required>
+                         <input type="email" class="form-control" id="email" name="email" required>
                      </div>
                      <div class="mb-3">
                          <label for="password" class="form-label">Mot de passe</label>
-                         <input type="password" class="form-control" id="password" required>
+                         <input type="password" class="form-control" id="password" name="password" required>
                      </div>
                      <button type="submit" class="btn btn-primary">Enregistrer</button>
                  </form>

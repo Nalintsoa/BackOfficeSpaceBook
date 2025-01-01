@@ -12,6 +12,14 @@ namespace Frontoffice
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<SharedFileService>();
+            builder.Services.AddSingleton<CustomerService>();
+
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Expiration
+                options.Cookie.HttpOnly = true;                // Security
+                options.Cookie.IsEssential = true;             // Need for essential cookie
+            });
 
             var app = builder.Build();
 
@@ -22,6 +30,8 @@ namespace Frontoffice
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSession();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

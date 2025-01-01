@@ -19,6 +19,8 @@ namespace Backoffice
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddSingleton<SharedFileService>();
 
+            //builder.Services.ConfigureApplicationCookie(options => { options.LoginPath = "/Login/Index"; });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

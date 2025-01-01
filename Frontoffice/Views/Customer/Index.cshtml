@@ -1,6 +1,9 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
+@model Frontoffice.Models.Customer
+
 @{
     <section class="section about-section gray-bg" id="about">
         <div class="container">
@@ -13,27 +16,32 @@
                             <div class="col-md-6">
                                 <div class="media">
                                     <label>Nom</label>
-                                    <p>TOVONALINTSOA</p>
+                                    <p>@Model.CustomerName</p>
                                 </div>
                                 <div class="media">
                                     <label>Adresse mail</label>
-                                    <p>nalytovo@gmail.com</p>
+                                    <p>@Model.CustomerEmail</p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="media">
                                     <label>Prénoms</label>
-                                    <p>Antonny Christian</p>
+                                    <p>@Model.CustomerFirstname</p>
                                 </div>
                                 <div class="media">
                                     <label>Phone</label>
-                                    <p>820-885-3321</p>
+                                    <p>@Model.CustomerPhone</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button class="btn btn-danger d-flex align-items-center"><i class="fa fa-power-off"></i><div class="ms-2">Se déconnecter</div></button>
+                                <form asp-action="Logout" asp-controller="Customer">
+                                    <button class="btn btn-danger d-flex align-items-center" type="submit">
+                                        <i class="fa fa-power-off"></i>
+                                        <div class="ms-2">Se déconnecter</div>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
