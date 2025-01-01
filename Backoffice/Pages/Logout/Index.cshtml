@@ -1,0 +1,31 @@
+﻿@page
+@model Backoffice.Pages.Logout.IndexModel
+@{
+}
+
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Déconnexion</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Voulez-vous vraiment vous déconnecter ?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="submit" data-dismiss="modal" name="action" value="cancel">Annuler</button>
+                    <button class="btn btn-primary" type="submit" name="action" value="save">Se déconnecter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#logoutModal").modal("show");
+    })
+</script>

@@ -20,6 +20,8 @@ namespace Backoffice.Data
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<Space> Spaces { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>().ToTable("Customer");
@@ -27,6 +29,7 @@ namespace Backoffice.Data
             modelBuilder.Entity<BookingEquip>().ToTable("BookingEquip");
             modelBuilder.Entity<Equipment>().ToTable("Equipment");
             modelBuilder.Entity<Space>().ToTable("Space");
+            modelBuilder.Entity<User>().ToTable("User");
         }
     }
 }

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Backoffice.Data;
 using Backoffice.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backoffice.Pages.Bookings
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly Backoffice.Data.SpaceBookContext _context;

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Backoffice.Data;
 using Backoffice.Services;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Authentication.Cookies;
 namespace Backoffice
 {
     public class Program
@@ -19,9 +20,19 @@ namespace Backoffice
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddSingleton<SharedFileService>();
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Login";
+                //options.AccessDeniedPath = "/AccessDenied";
+            });
+
             //builder.Services.ConfigureApplicationCookie(options => { options.LoginPath = "/Login/Index"; });
 
             var app = builder.Build();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
