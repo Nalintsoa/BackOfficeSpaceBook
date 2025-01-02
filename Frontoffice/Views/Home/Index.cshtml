@@ -75,7 +75,7 @@
                 <div class="col-9">
                     <div class="scroll-container">
                         @foreach (System.Data.DataRow row in Model.Rows) {
-                            <img src="@row["Filename"]" class="image-scrolled" />
+                            <img src="@row["Filename"]" class="image-scrolled" onclick="redirectToSpaceDetail(@row["SpaceID"])" />
                         }
                     </div>
                 </div>
@@ -251,4 +251,7 @@
         $("#signUp").modal("hide")
     }
 
+    function redirectToSpaceDetail (id) {
+         window.location.href = "/Space/Details/" + id;
+    }
 </script>

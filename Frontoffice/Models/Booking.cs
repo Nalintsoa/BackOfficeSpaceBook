@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
-namespace Backoffice.Models
+namespace Frontoffice.Models
 {
     public class Booking
     {
@@ -37,6 +37,12 @@ namespace Backoffice.Models
         [DisplayName("Salle")]
         public Space? Space { get; set; }
 
-        public ICollection<BookingEquip>? BookingEquips { get; set; }
+        public override string ToString()
+        {
+            return $"Booking [CustomerID={CustomerID}, BookingDate={BookingDate}, BookingPaidAmount={BookingPaidAmount}, BookingPrice={BookingPrice}, SpaceID={SpaceID}, IsCanceled={IsCanceled}]";
+        }
+
+
+        //public ICollection<BookingEquip>? BookingEquips { get; set; }
     }
 }

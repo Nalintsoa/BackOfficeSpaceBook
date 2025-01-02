@@ -1,3 +1,4 @@
+using Frontoffice.Models;
 using Frontoffice.Services;
 using Microsoft.Extensions.FileProviders;
 
@@ -13,6 +14,8 @@ namespace Frontoffice
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<SharedFileService>();
             builder.Services.AddSingleton<CustomerService>();
+            builder.Services.AddSingleton<SpaceService>();
+            builder.Services.AddSingleton<BookingService>();
 
             builder.Services.AddSession(options =>
             {
@@ -20,6 +23,9 @@ namespace Frontoffice
                 options.Cookie.HttpOnly = true;                // Security
                 options.Cookie.IsEssential = true;             // Need for essential cookie
             });
+
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             var app = builder.Build();
 

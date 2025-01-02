@@ -48,6 +48,8 @@ namespace Backoffice.Pages.Spaces
                 return Page();
             }
 
+            //var space = await _context.Spaces.SingleOrDefaultAsync(m => m.SpaceID == Space.SpaceID);
+            //Space.Filename = space.Filename;
             _context.Attach(Space).State = EntityState.Modified;
 
             try

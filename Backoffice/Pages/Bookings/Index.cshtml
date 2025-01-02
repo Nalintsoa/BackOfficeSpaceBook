@@ -20,6 +20,12 @@
                 </a>
             </th>
             <th>
+                <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "date") ? "date_desc" : "date")" class="simple-anchor">
+                    @Html.DisplayNameFor(model => model.Booking[0].BookingEndDate)
+                    @(Model.SortOrder == "date" ? "↑" : Model.SortOrder == "date_desc" ? "↓" : "")
+                </a>
+            </th>
+            <th>
                 <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "paid") ? "paid_desc" : "paid")" class="simple-anchor">
                     @Html.DisplayNameFor(model => model.Booking[0].BookingPaidAmount)
                     @(Model.SortOrder == "paid" ? "↑" : Model.SortOrder == "paid_desc" ? "↓" : "")
@@ -48,6 +54,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.BookingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingEndDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BookingPaidAmount)
