@@ -16,6 +16,10 @@ namespace Frontoffice.Models
         [Required]
         public double SpacePrice { get; set; }
 
+        [DisplayName("Description")]
+        [Required]
+        public string SpaceDescription { get; set; }
+
         [DisplayName("Image")]
         public string? Filename { get; set; }
 

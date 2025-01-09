@@ -31,6 +31,7 @@ namespace Frontoffice.Services
                                 SpaceCapacity = (int)reader["SpaceCapacity"],
                                 SpaceName = reader["SpaceName"].ToString(),
                                 SpacePrice = (double) reader["SpacePrice"],
+                                SpaceDescription = reader["SpaceDescription"].ToString(),
                                 Filename = reader["Filename"].ToString()
                             };
                         }

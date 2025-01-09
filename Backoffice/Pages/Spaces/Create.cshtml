@@ -31,6 +31,12 @@
                 <input asp-for="Space.SpacePrice" class="form-control" />
                 <span asp-validation-for="Space.SpacePrice" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Space.SpaceDescription" class="control-label"></label>
+                <input asp-for="Space.SpaceDescription" class="form-control" />
+                <span asp-validation-for="Space.SpaceDescription" class="text-danger"></span>
+            </div>
             <div class="form-group my-3">
                 @* <input asp-for="Space.SpacePrice" class="form-control" /> *@
                 <input type="file" id="Filename" name="Filename" />
