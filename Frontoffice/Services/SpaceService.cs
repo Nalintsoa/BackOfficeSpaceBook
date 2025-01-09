@@ -1,4 +1,5 @@
-﻿using Frontoffice.Models;
+﻿using System.Data;
+using Frontoffice.Models;
 using Microsoft.Data.SqlClient;
 
 namespace Frontoffice.Services
@@ -37,6 +38,19 @@ namespace Frontoffice.Services
                 }
             }
             return null;
+        }
+
+        public DataTable GetAllSpaces()
+        {
+            var dataTable = new DataTable();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT * FROM Space", connection);
+                var adapter = new SqlDataAdapter(command);
+
+                adapter.Fill(dataTable);
+            }
+            return dataTable;
         }
     }
 }

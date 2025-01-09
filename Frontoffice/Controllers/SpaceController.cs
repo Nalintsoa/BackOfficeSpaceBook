@@ -3,6 +3,7 @@ using Frontoffice.Models;
 using Frontoffice.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace Frontoffice.Controllers
 {
@@ -24,7 +25,12 @@ namespace Frontoffice.Controllers
         // GET: SpaceController
         public ActionResult Index()
         {
-            return View();
+            var dataTable = _spaceService.GetAllSpaces();
+            foreach (System.Data.DataRow row in dataTable.Rows)
+            {
+                row["Filename"] = _sharedFileService.GetSharedFilePath(row["Filename"].ToString());
+            }
+            return View(dataTable);
         }
 
         // GET: SpaceController/Details/5
@@ -42,20 +48,25 @@ namespace Frontoffice.Controllers
 
         public async Task<ActionResult> CreateBooking(string date, string space, string end)
         {
+            DateTime endDate = ParseBookingDateToString(end);
+            DateTime beginDate = ParseBookingDateToString(date);
+            System.TimeSpan dateDiff = endDate - beginDate;
+
             var booking = new Booking()
             {
                 CustomerID = int.Parse(HttpContext.Session.GetString("customerID")),
-                BookingDate = ParseBookingDateToString(date),
-                BookingEndDate = ParseBookingDateToString(end),
+                BookingDate = beginDate,
+                BookingEndDate = endDate,
                 BookingPaidAmount = 0,
                 BookingPrice = 0,
                 SpaceID = int.Parse(space),
                 IsCanceled = false,
             };
 
-            string customerEmail = "nalytovo@gmail.com"; // Vous pouvez le récupérer depuis votre base de données ou la session
+            
+            string customerEmail = "nalytovo@gmail.com";
             string subject = "Votre réservation a été créée";
-            string body = $"Bonjour, votre réservation pour l'espace {space} a été créée. " +
+            string body = $"Bonjour, votre réservation de {dateDiff.Days} jours pour l'espace {space} a été créée. " +
                           $"Date de début: {booking.BookingDate}, Date de fin: {booking.BookingEndDate}. " +
                           $"Nous vous contacterons pour plus de détails.";
             await _emailSender.SendEmailAsync(customerEmail, subject, body);
@@ -65,13 +76,18 @@ namespace Frontoffice.Controllers
             return RedirectToAction("Index", "Customer");
         }
 
-        private DateTime ParseBookingDateToString (string date)
+        private static DateTime ParseBookingDateToString (string date)
         {
             DateTime bookingDate = DateTime.Now;
             var isValidDate = DateTime.TryParse(date, out bookingDate);
             DateTime bookingDt = isValidDate ? bookingDate : DateTime.Now;
 
             return bookingDt;
+        }
+
+        public JsonResult GetBookingsDate (int SpaceID)
+        {
+            return _bookingService.GetReservedDates(SpaceID);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Frontoffice.Controllers
             var dataTable = new DataTable();
             using (var connection = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand("SELECT * FROM Space", connection);
+                var command = new SqlCommand("SELECT TOP 5 * FROM Space ORDER BY NEWID()", connection);
                 var adapter = new SqlDataAdapter(command);
 
                 adapter.Fill(dataTable);

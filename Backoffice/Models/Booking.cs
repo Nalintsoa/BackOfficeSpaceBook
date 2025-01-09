@@ -11,7 +11,7 @@ namespace Backoffice.Models
         public int CustomerID { get; set; }
         [DisplayName("Salle")]
         public int SpaceID { get; set; }
-        [DisplayName("Date de réservation")]
+        [DisplayName("Début de réservation")]
         [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
@@ -26,7 +26,17 @@ namespace Backoffice.Models
         [DisplayName("Montant payé")]
         public double? BookingPaidAmount { get; set; }
         [DisplayName("Prix de la location")]
-        public double? BookingPrice { get; set; }
+        public double BookingPrice { 
+            get {
+                if (Space != null) {
+                    return ((BookingEndDate - BookingDate).Days + 1) * Space.SpacePrice;
+                } else
+                {
+                    return 0;
+                }
+            }
+            set { } 
+        }
 
         public bool? IsCanceled { get; set; }
 
@@ -38,5 +48,17 @@ namespace Backoffice.Models
         public Space? Space { get; set; }
 
         public ICollection<BookingEquip>? BookingEquips { get; set; }
+
+        [DisplayName("Nombre de jours")]
+        public int? DateDiff
+        {
+            get { return (BookingEndDate - BookingDate).Days + 1; }
+            set {
+                if (value.HasValue)
+                {
+                    BookingEndDate = BookingDate.AddDays(value.Value);
+                }
+            } 
+        }
     }
 }

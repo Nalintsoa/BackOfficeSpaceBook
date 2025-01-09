@@ -29,13 +29,125 @@
                     </div>
                     <input type="hidden" class="form-control" id="space" style="max-width:200px" name="space" value="@Model.SpaceID">
                 </div>
-                <button class="btn btn-primary btn-lg mb-3 me-2" type="submit">
-                    <i class="bi bi-cart-plus"></i> Confirmer ici
-                </button>
+                <div class="row">
+                    <div class="d-flex">
+                        <div>
+                            <button class="btn btn-primary mb-3 me-2" type="submit">
+                                <i class="bi bi-cart-plus"></i> Réserver
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-success" onclick="toggleCalendar()">Voir la disponibilité</button>
+                        </div>
+                    </div>
+                </div>
             </form>
-            <button class="btn btn-outline-secondary btn-lg mb-3">
-                <i class="bi bi-heart"></i> Voir la disponibilité
-            </button>
+            
+                <div id="calendar" style="display: none; position: absolute">
+                    <div id="month">
+                        <button id="prev">◀</button>
+                        <h2 id="month-name"></h2>
+                        <button id="next">▶</button>
+                    </div>
+                    <div id="days">
+                        <div class="day-name">Lun</div>
+                        <div class="day-name">Mar</div>
+                        <div class="day-name">Mer</div>
+                        <div class="day-name">Jeu</div>
+                        <div class="day-name">Ven</div>
+                        <div class="day-name">Sam</div>
+                        <div class="day-name">Dim</div>
+                    </div>
+                    <div id="dates"></div>
+                </div>
         </div>
     </div>
 </div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const spaceId = urlParams.get('spaceId');
+    let eventDates = [];
+
+    function loadReservedDates() {
+        fetch(`/Space/GetBookingsDate?spaceID=${spaceId}`)
+            .then(response => response.json())
+            .then(data => {
+                eventDates = data ?? [];
+                renderCalendar(currentYear, currentMonth);
+            })
+            .catch(error => console.error("Erreur lors du chargement des dates réservées :", error));
+    }
+
+    const calendar = document.getElementById("calendar");
+    const monthName = document.getElementById("month-name");
+    const datesContainer = document.getElementById("dates");
+
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    loadReservedDates();
+
+    function renderCalendar(year, month) {
+      datesContainer.innerHTML = "";
+
+      // Nom du mois
+      const options = { month: "long", year: "numeric" };
+      monthName.textContent = new Date(year, month).toLocaleDateString("fr-FR", options);
+
+      // Obtenir le premier jour et les jours dans le mois
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      // Créer des espaces vides avant le 1er jour
+      for (let i = 1; i < (firstDay || 7); i++) {
+        const blank = document.createElement("div");
+        datesContainer.appendChild(blank);
+      }
+
+      // Ajouter les dates
+      for (let date = 1; date <= daysInMonth; date++) {
+        const dateElement = document.createElement("div");
+        dateElement.classList.add("date");
+        const fullDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+
+        // Marquer les dates avec des événements
+        if (eventDates.includes(fullDate)) {
+          dateElement.classList.add("marked");
+          dateElement.style.backgroundColor = "#ffeb3b";
+          const eventMarker = document.createElement("div");
+          eventMarker.classList.add("event");
+          dateElement.appendChild(eventMarker);
+          dateElement.title = eventDates[fullDate]; // Ajoute une info-bulle
+        }
+
+        dateElement.textContent = date;
+        datesContainer.appendChild(dateElement);
+      }
+    }
+
+    // Gestion des boutons de navigation
+    document.getElementById("prev").addEventListener("click", () => {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderCalendar(currentYear, currentMonth);
+    });
+
+    document.getElementById("next").addEventListener("click", () => {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderCalendar(currentYear, currentMonth);
+    });
+
+    function toggleCalendar () {
+        $("#calendar").toggle();
+    }
+
+</script>

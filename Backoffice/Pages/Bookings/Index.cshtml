@@ -26,11 +26,17 @@
                 </a>
             </th>
             <th>
-                <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "paid") ? "paid_desc" : "paid")" class="simple-anchor">
-                    @Html.DisplayNameFor(model => model.Booking[0].BookingPaidAmount)
-                    @(Model.SortOrder == "paid" ? "↑" : Model.SortOrder == "paid_desc" ? "↓" : "")
+                <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "date") ? "date_desc" : "date")" class="simple-anchor">
+                    @Html.DisplayNameFor(model => model.Booking[0].DateDiff)
+                    @(Model.SortOrder == "date" ? "↑" : Model.SortOrder == "date_desc" ? "↓" : "")
                 </a>
             </th>
+            @* <th> *@
+            @*     <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "paid") ? "paid_desc" : "paid")" class="simple-anchor"> *@
+            @*         @Html.DisplayNameFor(model => model.Booking[0].BookingPaidAmount) *@
+            @*         @(Model.SortOrder == "paid" ? "↑" : Model.SortOrder == "paid_desc" ? "↓" : "") *@
+            @*     </a> *@
+            @* </th> *@
             <th>
                 <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "price") ? "price_desc" : "price")" class="simple-anchor">
                     @Html.DisplayNameFor(model => model.Booking[0].BookingPrice)
@@ -59,10 +65,13 @@
                 @Html.DisplayFor(modelItem => item.BookingEndDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BookingPaidAmount)
+                @Html.DisplayFor(modelItem => item.DateDiff)
             </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.BookingPaidAmount) *@
+            @* </td> *@
             <td>
-                @Html.DisplayFor(modelItem => item.BookingPrice)
+                @item.BookingPrice.ToString("N1") Ar
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Customer.CustomerEmail)
