@@ -28,16 +28,41 @@ namespace Backoffice.Pages.Bookings
                 return NotFound();
             }
 
-            var booking = await _context.Bookings.FirstOrDefaultAsync(m => m.BookingID == id);
+            var booking = await _context.Bookings
+                .Include(s => s.Customer)
+                .Include(s => s.Space)
+                .FirstOrDefaultAsync(m => m.BookingID == id);
             if (booking == null)
             {
                 return NotFound();
             }
             else
             {
+                Console.WriteLine(booking.ToString());
                 Booking = booking;
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var bookingId = int.Parse(Request.Form["Booking.BookingID"]);
+            var booking = await _context.Bookings.FindAsync(bookingId);
+
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            booking.IsValidated = true;
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index"); 
         }
     }
 }

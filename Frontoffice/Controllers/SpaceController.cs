@@ -60,7 +60,7 @@ namespace Frontoffice.Controllers
                 BookingPaidAmount = 0,
                 BookingPrice = 0,
                 SpaceID = int.Parse(space),
-                IsCanceled = false,
+                IsValidated = false,
             };
 
             

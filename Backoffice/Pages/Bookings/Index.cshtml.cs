@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Backoffice.Data;
 using Backoffice.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Backoffice.Pages.Bookings
 {

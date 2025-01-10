@@ -2,7 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model Frontoffice.Models.Customer
+@model Frontoffice.ViewModels.CustomerViewModel
 
 @{
     <section class="section about-section gray-bg" id="about">
@@ -10,38 +10,87 @@
             <div class="row align-items-center flex-row-reverse">
                 <div class="col-lg-6">
                     <div class="about-text go-to">
-                        <h3 class="dark-color">Espace client</h3>
-                        <h6 class="theme-color lead">Voici vos informations enregistrées</h6>
-                        <div class="row about-list">
-                            <div class="col-md-6">
-                                <div class="media">
-                                    <label>Nom</label>
-                                    <p>@Model.CustomerName</p>
+                        <div id="customer">
+                            <h3 class="dark-color">Espace client</h3>
+                            <h6 class="theme-color lead">Voici vos informations enregistrées</h6>
+                            <div class="row about-list">
+                                <div class="col-md-6">
+                                    <div class="media">
+                                        <label>Nom</label>
+                                        <p>@Model.Customer.CustomerName</p>
+                                    </div>
+                                    <div class="media">
+                                        <label>Adresse mail</label>
+                                        <p>@Model.Customer.CustomerEmail</p>
+                                    </div>
                                 </div>
-                                <div class="media">
-                                    <label>Adresse mail</label>
-                                    <p>@Model.CustomerEmail</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="media">
-                                    <label>Prénoms</label>
-                                    <p>@Model.CustomerFirstname</p>
-                                </div>
-                                <div class="media">
-                                    <label>Phone</label>
-                                    <p>@Model.CustomerPhone</p>
+                                <div class="col-md-6">
+                                    <div class="media">
+                                        <label>Prénoms</label>
+                                        <p>@Model.Customer.CustomerFirstname</p>
+                                    </div>
+                                    <div class="media">
+                                        <label>Phone</label>
+                                        <p>@Model.Customer.CustomerPhone</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="table-responsive" id="bookings" style="display: none">
+                            <table class="table text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Date de début</th>
+                                        <th>Date de fin</th>
+                                        <th>Jours</th>
+                                        <th>Salle</th>
+                                        <th>P.U.</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var booking in Model.Bookings)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (booking.IsValidated == true)
+                                                {
+                                                    <i class="fa-solid fa-check fa-sm" style="color: #4d934d;"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa-solid fa-xmark fa-sm" style="color:red"></i>
+                                                }
+                                            </td>
+                                            <td>@booking.BookingDate</td>
+                                            <td>@booking.BookingEndDate</td>
+                                            <td>@booking?.DateDiff</td>
+                                            <td>@booking.Space.SpaceName</td>
+                                            <td>@booking.Space.SpacePrice.ToString("N1") Ar</td>
+                                            <td>@booking.BookingPrice?.ToString("N1") Ar</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <form asp-action="Logout" asp-controller="Customer">
-                                    <button class="btn btn-danger d-flex align-items-center" type="submit">
-                                        <i class="fa fa-power-off"></i>
-                                        <div class="ms-2">Se déconnecter</div>
-                                    </button>
-                                </form>
+                                <div class="d-flex">
+                                    <div>
+                                        <button class="btn btn-light d-flex align-items-center" onclick="toggleBookings()">
+                                            <div class="ms-2">Mes réservations</div>
+                                        </button>
+                                    </div>
+                                    <div class="ms-2">
+                                        <form asp-action="Logout" asp-controller="Customer">
+                                            <button class="btn btn-danger d-flex align-items-center" type="submit">
+                                                <i class="fa fa-power-off"></i>
+                                                <div class="ms-2">Se déconnecter</div>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -82,4 +131,12 @@
             </div>
         </div>
     </section>
+
 }
+
+<script>
+    function toggleBookings () {
+        $("#bookings").toggle();
+        $("#customer").toggle();
+    }
+</script>

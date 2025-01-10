@@ -24,6 +24,8 @@ namespace Frontoffice
                 options.Cookie.IsEssential = true;             // Need for essential cookie
             });
 
+            builder.Services.AddHttpContextAccessor();
+
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
             builder.Services.AddTransient<IEmailSender, EmailSender>();
 

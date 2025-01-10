@@ -10,9 +10,10 @@
 <p>
     <a asp-page="Create">Effectuer une nouvelle réservation</a>
 </p>
-<table class="table">
+<table class="table bg-white">
     <thead>
         <tr>
+            <th></th>
             <th>
                 <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "date") ? "date_desc" : "date")" class="simple-anchor">
                     @Html.DisplayNameFor(model => model.Booking[0].BookingDate)
@@ -31,12 +32,6 @@
                     @(Model.SortOrder == "date" ? "↑" : Model.SortOrder == "date_desc" ? "↓" : "")
                 </a>
             </th>
-            @* <th> *@
-            @*     <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "paid") ? "paid_desc" : "paid")" class="simple-anchor"> *@
-            @*         @Html.DisplayNameFor(model => model.Booking[0].BookingPaidAmount) *@
-            @*         @(Model.SortOrder == "paid" ? "↑" : Model.SortOrder == "paid_desc" ? "↓" : "") *@
-            @*     </a> *@
-            @* </th> *@
             <th>
                 <a asp-page="./Index" asp-route-SortOrder="@((Model.SortOrder == "price") ? "price_desc" : "price")" class="simple-anchor">
                     @Html.DisplayNameFor(model => model.Booking[0].BookingPrice)
@@ -58,6 +53,13 @@
     <tbody>
 @foreach (var item in Model.Booking) {
         <tr>
+            <td class="text-center">
+                @if(item.IsValidated == true) {
+                    <i class="fa-solid fa-check fa-sm" style="color: #4d934d;"></i>
+                } else {
+                    <i class="fa-solid fa-xmark fa-sm" style="color:red"></i>
+                }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BookingDate)
             </td>
@@ -67,9 +69,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateDiff)
             </td>
-            @* <td> *@
-            @*     @Html.DisplayFor(modelItem => item.BookingPaidAmount) *@
-            @* </td> *@
             <td>
                 @item.BookingPrice.ToString("N1") Ar
             </td>
@@ -80,9 +79,28 @@
                 @Html.DisplayFor(modelItem => item.Space.SpaceName)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.BookingID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.BookingID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.BookingID">Delete</a>
+                <div class="dropdown">
+                    <a href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Actions</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                        <a asp-page="./Edit" asp-route-id="@item.BookingID" class="dropdown-item">
+                                <i class="fa-solid fa-pen-to-square fa-sm"></i>
+                            Modifier
+                        </a>
+                        <a asp-page="./Delete" asp-route-id="@item.BookingID" class="dropdown-item">
+                                <i class="fa-solid fa-trash-can fa-sm" style="color: #ff0000;"></i>
+                            Supprimer
+                        </a>
+                            @if (item.IsValidated != true)
+                            {
+                                <a asp-page="./Details" asp-route-id="@item.BookingID" class="dropdown-item">
+                                        <i class="fa-solid fa-check fa-sm" style="color: #4d934d;"></i>
+                                    Valider
+                                </a>
+                            }
+                    </div>
+                </div>
             </td>
         </tr>
 }

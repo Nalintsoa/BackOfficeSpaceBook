@@ -26,9 +26,36 @@ namespace Frontoffice.Models
         [DisplayName("Montant payé")]
         public double? BookingPaidAmount { get; set; }
         [DisplayName("Prix de la location")]
-        public double? BookingPrice { get; set; }
+        public double? BookingPrice
+        {
+            get
+            {
+                if (Space != null)
+                {
+                    return ((BookingEndDate - BookingDate).Days + 1) * Space.SpacePrice;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set { }
+        }
 
-        public bool? IsCanceled { get; set; }
+        public bool? IsValidated { get; set; }
+
+        [DisplayName("Nombre de jours")]
+        public int? DateDiff
+        {
+            get { return (BookingEndDate - BookingDate).Days + 1; }
+            set
+            {
+                if (value.HasValue)
+                {
+                    BookingEndDate = BookingDate.AddDays(value.Value);
+                }
+            }
+        }
 
 
 
@@ -39,7 +66,7 @@ namespace Frontoffice.Models
 
         public override string ToString()
         {
-            return $"Booking [CustomerID={CustomerID}, BookingDate={BookingDate}, BookingPaidAmount={BookingPaidAmount}, BookingPrice={BookingPrice}, SpaceID={SpaceID}, IsCanceled={IsCanceled}]";
+            return $"Booking [CustomerID={CustomerID}, BookingDate={BookingDate}, BookingPaidAmount={BookingPaidAmount}, BookingPrice={BookingPrice}, SpaceID={SpaceID}, IsCanceled={IsValidated}]";
         }
 
 

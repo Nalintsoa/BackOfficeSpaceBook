@@ -16,7 +16,6 @@ namespace Backoffice.Pages.Logout
         public async Task<IActionResult> OnPostAsync()
         {
             string action = Request.Form["action"];
-            Console.WriteLine("action",action);
 
             if (action == "save")
             {

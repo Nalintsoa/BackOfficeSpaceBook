@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Humanizer;
 
 namespace Backoffice.Models
 {
@@ -38,9 +39,7 @@ namespace Backoffice.Models
             set { } 
         }
 
-        public bool? IsCanceled { get; set; }
-
-
+        public bool? IsValidated { get; set; }
 
         [DisplayName("Client")]
         public Customer? Customer { get; set; }
@@ -59,6 +58,18 @@ namespace Backoffice.Models
                     BookingEndDate = BookingDate.AddDays(value.Value);
                 }
             } 
+        }
+
+        public override string ToString()
+        {
+            return $"Booking ID: {BookingID}\n" +
+                   $"Client: {Customer}\n" +
+                   $"Salle: {Space?.SpaceName ?? "Space not available"}\n" +
+                   $"Début de réservation: {BookingDate:dd-MM-yyyy}\n" +
+                   $"Fin de réservation: {BookingEndDate:dd-MM-yyyy}\n" +
+                   $"Montant payé: {BookingPaidAmount?.ToString("C") ?? "Non payé"}\n" +
+                   $"Prix de la location: {BookingPrice:C}\n" +
+                   $"Nombre de jours: {DateDiff}";
         }
     }
 }
