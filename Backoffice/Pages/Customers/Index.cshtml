@@ -8,9 +8,14 @@
 <h1>Clients</h1>
 
 <p>
-    <button class="btn btn-outline-success"><a asp-page="Create">Nouveau client</a></button>
+    <button class="btn bg-gradient-primary">
+        <a asp-page="Create" class="text-white d-flex">
+            <div><i class="fa fa-sm fa-plus"></i></div>
+            <div class="ms-2">Nouveau client</div>
+        </a>
+    </button>
 </p>
-<table class="table">
+<table class="table shadow">
     <thead>
         <tr>
             <th>
@@ -25,7 +30,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Customer[0].CustomerPhone)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -43,10 +48,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CustomerPhone)
             </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.CustomerID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.CustomerID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.CustomerID">Delete</a>
+            <td class="d-flex">
+                <a asp-page="./Edit" asp-route-id="@item.CustomerID" class="btn btn-light d-flex">
+                    <div><i class="fa fa-sm fa-edit"></i></div>
+                    <div class="ms-2">Modifier</div>
+                </a>
+                 <a asp-page="./Details" asp-route-id="@item.CustomerID" class="btn btn-light d-flex">
+                    <div><i class="fa fa-sm fa-circle-info"></i></div>
+                        <div class="ms-2">Détails</div>
+                </a>
+                    <a asp-page="./Delete" asp-route-id="@item.CustomerID" class="btn btn-light d-flex">
+                        <div><i class="fa-solid fa-trash-can fa-sm" style="color: #ff0000;"></i></div>
+                        <div class="ms-2">Supprimer</div>
+                    </a>
             </td>
         </tr>
 }

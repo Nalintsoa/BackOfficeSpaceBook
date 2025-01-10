@@ -7,7 +7,7 @@ namespace Frontoffice.Services
 {
     public interface IEmailSender
     {
-        Task SendEmailAsync(string toEmail, string subject, string body);
+        Task SendEmailAsync(string toEmail, string subject, string body, byte[] attachment, string attachmentName);
     }
     public class EmailSender : IEmailSender
     {
@@ -18,7 +18,7 @@ namespace Frontoffice.Services
             _emailSettings = emailSettings.Value;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string body)
+        public async Task SendEmailAsync(string toEmail, string subject, string body, byte[] attachment, string attachmentName)
         {
             using (var client = new SmtpClient(_emailSettings.SMTPServer, _emailSettings.SMTPPort))
             {
@@ -34,6 +34,11 @@ namespace Frontoffice.Services
                 };
 
                 mailMessage.To.Add(toEmail);
+
+                if (attachment != null && attachment.Length > 0)
+                {
+                    mailMessage.Attachments.Add(new Attachment(new MemoryStream(attachment), attachmentName));
+                }
 
                 await client.SendMailAsync(mailMessage);
             }

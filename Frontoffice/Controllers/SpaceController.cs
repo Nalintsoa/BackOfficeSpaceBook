@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Frontoffice.Helpers;
 using Frontoffice.Models;
 using Frontoffice.Services;
 using Microsoft.AspNetCore.Http;
@@ -13,13 +14,15 @@ namespace Frontoffice.Controllers
         private readonly SharedFileService _sharedFileService;
         private readonly BookingService _bookingService;
         private readonly IEmailSender _emailSender;
+        private readonly CustomerService _customerService;
 
-        public SpaceController(SpaceService spaceService, SharedFileService sharedFileService, BookingService bookingService, IEmailSender emailSender)
+        public SpaceController(SpaceService spaceService, SharedFileService sharedFileService, BookingService bookingService, IEmailSender emailSender, CustomerService customerService)
         {
             _spaceService = spaceService;
             _sharedFileService = sharedFileService;
             _bookingService = bookingService;
             _emailSender = emailSender;
+            _customerService = customerService;
         }
 
         // GET: SpaceController
@@ -52,24 +55,50 @@ namespace Frontoffice.Controllers
             DateTime beginDate = ParseBookingDateToString(date);
             System.TimeSpan dateDiff = endDate - beginDate;
 
+            int customerID = int.Parse(HttpContext.Session.GetString("customerID"));
+            int spaceID = int.Parse(space);
+
             var booking = new Booking()
             {
-                CustomerID = int.Parse(HttpContext.Session.GetString("customerID")),
+                CustomerID = customerID,
                 BookingDate = beginDate,
                 BookingEndDate = endDate,
                 BookingPaidAmount = 0,
                 BookingPrice = 0,
-                SpaceID = int.Parse(space),
+                SpaceID = spaceID,
                 IsValidated = false,
             };
 
-            
+            Customer? customer = _customerService.GetUserByID(customerID);
+            Space? spaceFromDB = _spaceService.GetSpaceById(spaceID);
+
+            if (customer == null || spaceFromDB == null)
+            {
+                return NotFound();
+            }
+
             string customerEmail = "nalytovo@gmail.com";
+
+            byte[] pdfInvoice = PdfHelper.GenerateInvoice(
+                "SpaceBook",
+                $"{customer.CustomerName}",
+                $"{customer.CustomerPhone} / {customer.CustomerEmail}",
+                "---",
+                DateTime.Now,
+                spaceFromDB.SpaceName,
+                dateDiff.Days,        // Quantité
+                spaceFromDB.SpacePrice,   // Prix unitaire
+                20,   // Taux de TVA en %
+                booking
+            );
+
             string subject = "Votre réservation a été créée";
             string body = $"Bonjour, votre réservation de {dateDiff.Days} jours pour l'espace {space} a été créée. " +
                           $"Date de début: {booking.BookingDate}, Date de fin: {booking.BookingEndDate}. " +
-                          $"Nous vous contacterons pour plus de détails.";
-            await _emailSender.SendEmailAsync(customerEmail, subject, body);
+                          $"N'hésitez pas à nous contacter si besoin." +
+                          $"Nous vous contacterons le plus vite plus vite possible pour la confirmation." +
+                          $"À très bientôt";
+            await _emailSender.SendEmailAsync(customerEmail, subject, body, pdfInvoice, "Facture_reservation.pdf");
 
             _bookingService.CreateBooking(booking);
 

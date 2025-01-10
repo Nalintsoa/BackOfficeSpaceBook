@@ -8,10 +8,15 @@
 <h1>Salles</h1>
 
 <p>
-    <a asp-page="Create">Enregistrer une nouvelle salle</a>
+    <button class="btn bg-gradient-primary">
+        <a asp-page="Create" class="text-white d-flex">
+            <div><i class="fa fa-sm fa-plus"></i></div>
+            <div class="ms-2">Nouvelle salle</div>
+        </a>
+    </button>
 </p>
 <div class="table-responsive">
-<table class="table">
+<table class="table shadow">
     <thead>
         <tr>
             <th>
@@ -20,7 +25,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Space[0].SpaceCapacity)
             </th>
-            <th>
+            <th class="text-nowrap">
                 @Html.DisplayNameFor(model => model.Space[0].SpacePrice) de location
             </th>
             <th>
@@ -29,7 +34,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Space[0].Filename)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -50,11 +55,20 @@
             <td>
                 <img src="@item.Filename" alt="Image" style="width: 100px; height: auto;" />
             </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.SpaceID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.SpaceID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.SpaceID">Delete</a>
-            </td>
+                    <td class="d-flex">
+                        <a asp-page="./Edit" asp-route-id="@item.SpaceID" class="btn btn-light d-flex">
+                            <div><i class="fa fa-sm fa-edit"></i></div>
+                            <div class="ms-2">Modifier</div>
+                        </a>
+                        <a asp-page="./Details" asp-route-id="@item.SpaceID" class="btn btn-light d-flex">
+                            <div><i class="fa fa-sm fa-circle-info"></i></div>
+                            <div class="ms-2">Détails</div>
+                        </a>
+                        <a asp-page="./Delete" asp-route-id="@item.SpaceID" class="btn btn-light d-flex">
+                            <div><i class="fa-solid fa-trash-can fa-sm" style="color: #ff0000;"></i></div>
+                            <div class="ms-2">Supprimer</div>
+                        </a>
+                    </td>
         </tr>
 }
     </tbody>

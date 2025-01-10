@@ -4,13 +4,23 @@
     ViewData["Title"] = "Home page";
 }
 
+@{
+    var currentMonth = DateTime.Now;
+    var reservationCounts = await Model.GetReservationCountByMonth(currentMonth);
+    var bookingPerSpace = await Model.GetReservationBySpace();
+}
+
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 
+<header>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
+
+</header>
+
 <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4">  
-     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>  
-     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>  
+     <h1 class="h3 mb-0 text-gray-800">Accueil</h1>
  </div>  
 
 <!-- Content Row -->
@@ -23,12 +33,12 @@
                  <div class="row no-gutters align-items-center">  
                      <div class="col mr-2">  
                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">  
-                             Earnings (Monthly)  
+                             Clients  
                          </div>  
-                         <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>  
+                         <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.customerCount</div>  
                      </div>  
                      <div class="col-auto">  
-                         <i class="fas fa-calendar fa-2x text-gray-300"></i>  
+                         <i class="fas fa-users fa-2x text-gray-300"></i>  
                      </div>  
                  </div>  
              </div>  
@@ -42,13 +52,13 @@
                  <div class="row no-gutters align-items-center">  
                      <div class="col mr-2">  
                          <div class="text-xs font-weight-bold text-success text-uppercase mb-1">  
-                             Earnings (Annual)  
+                             Salles
                          </div>  
-                         <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>  
+                         <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.spaceCount</div>  
                      </div>  
-                     <div class="col-auto">  
-                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>  
-                     </div>  
+                     <div class="col-auto">
+                        <i class="fas fa-house-laptop fa-2x text-gray-300"></i>
+                    </div>  
                  </div>  
              </div>  
          </div>  
@@ -61,21 +71,16 @@
                  <div class="row no-gutters align-items-center">  
                      <div class="col mr-2">  
                          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">  
-                             Tasks  
+                             Réservations en attente
                          </div>  
                          <div class="row no-gutters align-items-center">  
-                             <div class="col-auto">  
-                                 <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>  
-                             </div>  
                              <div class="col">  
-                                 <div class="progress progress-sm mr-2">  
-                                     <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>  
-                                 </div>  
-                             </div>  
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.invalidBookingCount</div>
+                            </div>  
                          </div>  
                      </div>  
                      <div class="col-auto">  
-                         <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>  
+                         <i class="fas fa-clock fa-2x text-gray-300"></i>  
                      </div>  
                  </div>  
              </div>  
@@ -89,13 +94,13 @@
                  <div class="row no-gutters align-items-center">  
                      <div class="col mr-2">  
                          <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">  
-                             Pending Requests  
+                             Toutes les réservations
                          </div>  
-                         <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>  
+                         <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.bookingCount</div>  
                      </div>  
-                     <div class="col-auto">  
-                         <i class="fas fa-comments fa-2x text-gray-300"></i>  
-                     </div>  
+                     <div class="col-auto">
+                        <i class="fas fa-bookmark fa-2x text-gray-300"></i>
+                    </div>  
                  </div>  
              </div>  
          </div>  
@@ -111,7 +116,7 @@
          <div class="card shadow mb-4">  
              <!-- Card Header - Dropdown -->  
              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">  
-                 <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>  
+                 <h6 class="m-0 font-weight-bold text-primary">Réservations ce mois-ci</h6>  
                  <div class="dropdown no-arrow">  
                      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  
                          <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>  
@@ -129,7 +134,7 @@
              <div class="card-body">  
                  <div class="chart-area">  
                      <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>  
-                     <canvas id="myAreaChart" width="684" height="320" style="display: block; width: 684px; height: 320px;" class="chartjs-render-monitor"></canvas>  
+                    <canvas id="myAreaChart" style="display: block; width: 684px; height: 320px;"></canvas>
                  </div>  
              </div>  
          </div>  
@@ -140,7 +145,7 @@
          <div class="card shadow mb-4">  
              <!-- Card Header - Dropdown -->  
              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">  
-                 <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>  
+                 <h6 class="m-0 font-weight-bold text-primary">Réservations par salle</h6>  
                  <div class="dropdown no-arrow">  
                      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  
                          <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>  
@@ -159,25 +164,14 @@
                  <div class="chart-pie pt-4 pb-2">  
                      <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>  
                      <canvas id="myPieChart" width="309" height="245" style="display: block; width: 309px; height: 245px;" class="chartjs-render-monitor"></canvas>  
-                 </div>  
-                 <div class="mt-4 text-center small">  
-                     <span class="mr-2">  
-                         <i class="fas fa-circle text-primary"></i> Direct  
-                     </span>  
-                     <span class="mr-2">  
-                         <i class="fas fa-circle text-success"></i> Social  
-                     </span>  
-                     <span class="mr-2">  
-                         <i class="fas fa-circle text-info"></i> Referral  
-                     </span>  
-                 </div>  
+                 </div>
              </div>  
          </div>  
      </div>  
  </div>  
 
 <!-- Content Row -->
- <div class="row">  
+@* <div class="row">  
 
      <!-- Content Column -->  
      <div class="col-lg-6 mb-4">  
@@ -323,7 +317,65 @@
          </div>  
 
      </div>  
- </div>  
+ </div>  *@
 <!-- /.container-fluid -->
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var reservationDays = @Html.Raw(Json.Serialize(reservationCounts.Select(rc => rc.Day.ToString())));
+    var reservationCounts = @Html.Raw(Json.Serialize(reservationCounts.Select(rc => rc.Count)));
+
+    var ctx = document.getElementById('myAreaChart').getContext('2d');
+    var chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: reservationDays,
+        datasets: [{
+          label: 'Nombre de réservation',
+          data: reservationCounts,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+
+
+    var pieKeys = @Html.Raw(Json.Serialize(bookingPerSpace.Select(rc => rc.Key)));
+    var pieCounts = @Html.Raw(Json.Serialize(bookingPerSpace.Select(rc => rc.Count)));
+
+    var pieContainer = document.getElementById('myPieChart').getContext('2d');
+      new Chart(pieContainer, {
+      type: 'pie',
+      data: {
+        labels: pieKeys,
+        datasets: [{
+          label: 'réservations',
+          data: pieCounts,
+          backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 4
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+</script>
 

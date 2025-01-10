@@ -39,5 +39,34 @@ namespace Frontoffice.Services
             }
             return null;
         }
+
+        public Customer GetUserByID(int customerID)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("SELECT * FROM Customer WHERE CustomerID = @CustomerID", connection))
+                {
+                    command.Parameters.AddWithValue("@CustomerID", customerID);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Customer
+                            {
+                                CustomerID = (int)reader["CustomerID"],
+                                CustomerEmail = reader["CustomerEmail"].ToString(),
+                                CustomerFirstname = reader["CustomerFirstname"].ToString(),
+                                CustomerName = reader["CustomerName"].ToString(),
+                                CustomerPassword = reader["CustomerPassword"].ToString(),
+                                CustomerPhone = reader["CustomerPhone"].ToString(),
+                                Salt = reader["Salt"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
     }
 }
