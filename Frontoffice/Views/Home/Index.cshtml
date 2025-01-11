@@ -202,7 +202,7 @@
                 </div>
                 <div class="mb-3">
                      <label for="password" class="form-label">Mot de passe</label>
-                        <input type="text" class="form-control" name="password" required />
+                        <input type="password" class="form-control" name="password" required />
                 </div>
                 <button type="submit" class="btn btn-primary">Ajouter</button>
             </form>
@@ -252,6 +252,6 @@
     }
 
     function redirectToSpaceDetail (id) {
-         window.location.href = "/Space/Details/" + id;
+         window.location.href = "/Space/Details/" + id + "?spaceId=" + id;
     }
 </script>

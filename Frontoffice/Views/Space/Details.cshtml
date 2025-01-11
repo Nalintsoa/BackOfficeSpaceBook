@@ -10,31 +10,42 @@
         <!-- Product Details -->
         <div class="col-md-6 mt-3">
             <h2 class="mb-3">@Model.SpaceName</h2>
-            <p class="text-muted mb-4">Salle d'étude / bureau</p>
+            <p class="text-muted mb-4">Capacité : @Model.SpaceCapacity personnes</p>
             <div class="mb-3">
                 <span class="h4 me-2">@Model.SpacePrice Ar</span>
                 <span class="text-muted"><s>$399.99</s></span>
             </div>
             <p class="mb-4">
-               @Model.SpaceDescription
+                @Model.SpaceDescription
             </p>
             <form method="post" asp-action="CreateBooking">
-                <div class="mb-4 row">
-                    <label for="BookingDate" class="form-label">Réserver le :</label>
-                    <div class="d-flex align-items-center">
-                        <input type="date" class="form-control me-2" id="date" style="max-width:200px" name="date" required>
-                        au
-                        <input type="date" class="form-control ms-2" id="end" style="max-width:200px" name="end" required>
+                @if (!ViewData.ContainsKey("isCustomerLoggedIn") || !(bool)ViewData["isCustomerLoggedIn"]!)
+                {
+                    <div class="mb-4 row">
+                        <div class="text-black-50"><i>Veuillez vous connecter pour pouvoir effectuer une réservation</i></div>
                     </div>
-                    <input type="hidden" class="form-control" id="space" style="max-width:200px" name="space" value="@Model.SpaceID">
-                </div>
+                } else {
+                    <div class="mb-4 row">
+                        <label for="BookingDate" class="form-label">Réserver le :</label>
+                        <div class="d-flex align-items-center">
+                            <input type="date" class="form-control me-2" id="date" style="max-width:200px" name="date" required>
+                            au
+                            <input type="date" class="form-control ms-2" id="end" style="max-width:200px" name="end" required>
+                        </div>
+                        <input type="hidden" class="form-control" id="space" style="max-width:200px" name="space" value="@Model.SpaceID">
+                    </div>
+                }
                 <div class="row">
                     <div class="d-flex">
-                        <div>
-                            <button class="btn btn-primary mb-3 me-2" type="submit">
-                                <i class="bi bi-cart-plus"></i> Réserver
-                            </button>
-                        </div>
+                        @if (!ViewData.ContainsKey("isCustomerLoggedIn") || !(bool)ViewData["isCustomerLoggedIn"]!)
+                        {}
+                        else{
+                            <div>
+                                <button class="btn btn-primary mb-3 me-2" type="submit">
+                                    <i class="bi bi-cart-plus"></i> Réserver
+                                </button>
+                            </div>
+                        }
                         <div>
                             <button type="button" class="btn btn-success" onclick="toggleCalendar()">Voir la disponibilité</button>
                         </div>
@@ -148,5 +159,15 @@
     function toggleCalendar () {
         $("#calendar").toggle();
     }
+
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const startDate = document.getElementById("date").value;
+        const endDate = document.getElementById("end").value;
+
+        if (new Date(startDate) > new Date(endDate)) {
+            e.preventDefault();
+            alert("La date de début ne peut pas être supérieure à la date de fin.");
+        }
+    });
 
 </script>

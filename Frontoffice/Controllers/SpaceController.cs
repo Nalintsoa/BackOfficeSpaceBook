@@ -26,19 +26,42 @@ namespace Frontoffice.Controllers
         }
 
         // GET: SpaceController
-        public ActionResult Index()
+        public ActionResult Index(string search = "", int page = 1)
         {
+            int pageSize = 6; 
             var dataTable = _spaceService.GetAllSpaces();
-            foreach (System.Data.DataRow row in dataTable.Rows)
+
+      
+            if (!string.IsNullOrEmpty(search))
+            {
+                dataTable = dataTable.AsEnumerable()
+                                     .Where(row => row["SpaceName"].ToString().Contains(search, StringComparison.OrdinalIgnoreCase) || row["SpaceCapacity"].ToString().Contains(search, StringComparison.OrdinalIgnoreCase))
+                                     .CopyToDataTable();
+            }
+
+            int totalItems = dataTable.Rows.Count;
+            var pagedData = dataTable.AsEnumerable()
+                                     .Skip((page - 1) * pageSize)
+                                     .Take(pageSize)
+                                     .CopyToDataTable();
+
+            foreach (System.Data.DataRow row in pagedData.Rows)
             {
                 row["Filename"] = _sharedFileService.GetSharedFilePath(row["Filename"].ToString());
             }
-            return View(dataTable);
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            ViewBag.CurrentPage = page;
+            ViewBag.SearchQuery = search;
+
+            return View(pagedData);
         }
+
 
         // GET: SpaceController/Details/5
         public ActionResult Details(int id)
         {
+            ViewData["isCustomerLoggedIn"] = !string.IsNullOrEmpty(HttpContext.Session.GetString("customerEmail"));
             var space = _spaceService.GetSpaceById(id);
             if (space == null)
             {
@@ -54,6 +77,12 @@ namespace Frontoffice.Controllers
             DateTime endDate = ParseBookingDateToString(end);
             DateTime beginDate = ParseBookingDateToString(date);
             System.TimeSpan dateDiff = endDate - beginDate;
+
+            if (beginDate > endDate)
+            {
+                ModelState.AddModelError("date", "La date de début ne peut pas être supérieure à la date de fin.");
+                return View();
+            }
 
             int customerID = int.Parse(HttpContext.Session.GetString("customerID"));
             int spaceID = int.Parse(space);

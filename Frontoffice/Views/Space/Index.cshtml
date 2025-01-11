@@ -2,27 +2,55 @@
 }
 
 <section id="gallery" style="margin-top:80px">
-    <div class="container mt-5" >
-        <div class="row">
-            <h3>Salles disponibles</h3>
+    <div class="container mt-5">
+        <div class="row justify-content-between">
+            <div class="col">
+                <h3>Salles disponibles</h3>
+            </div>
+            <div class="col text-end">
+                <form action="" method="get" class="search-bar">
+                    <input type="search" name="search" value="@ViewBag.SearchQuery" placeholder="Rechercher une salle..." required>
+                    <button class="search-btn" type="submit">
+                        <span>Search</span>
+                    </button>
+                </form>
+            </div>
         </div>
         <div class="row mt-3">
             @foreach (System.Data.DataRow row in Model.Rows)
             {
                 <div class="col-lg-4 mb-4">
                     <div class="card">
-                        <img src="@row["Filename"]" alt="" class="card-img-top">
+                        <img src="@row["Filename"]" alt="" class="card-img-top" style="max-width:414px; max-height:275.85px">
                         <div class="card-body">
                             <h5 class="card-title">@row["SpaceName"]</h5>
                             <p class="card-text">@row["SpaceDescription"]</p>
                             <a href="/Space/Details/@row["SpaceID"]?spaceId=@row["SpaceID"]" class="btn btn-outline-success btn-sm">Voir les détails</a>
+                            (@row["SpaceCapacity"] personnes)
                         </div>
                     </div>
                 </div>
             }
         </div>
+
+        <!-- Pagination -->
+        <div class="row mt-4">
+            <div class="col text-center">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                                <a class="page-link" href="?search=@ViewBag.SearchQuery&page=@i">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
 </section>
+
 
 <script>
     function redirectToSpaceDetail (id) {

@@ -49,9 +49,7 @@ namespace Backoffice.Pages.Spaces
             }
 
             // Enregistrer le fichier dans le dossier wwwroot/images
-            Console.WriteLine("'****************************************************************environment'", _environment.WebRootPath);
             var sharedPath = _configuration["SharedFilesPath"];
-            Console.WriteLine($"sharedddddd : {sharedPath} et aussi {_environment.ContentRootPath}");
             var uploadsFolder = Path.Combine(sharedPath, "images");
             Directory.CreateDirectory(uploadsFolder); // S'assure que le dossier existe
 
@@ -69,6 +67,7 @@ namespace Backoffice.Pages.Spaces
                 SpacePrice = Space.SpacePrice,
                 SpaceCapacity = Space.SpaceCapacity,
                 SpaceName = Space.SpaceName,
+                SpaceDescription = Space.SpaceDescription,
                 Filename = Path.Combine("images", uniqueFileName),
             };
             _context.Spaces.Add(imageRecord);
